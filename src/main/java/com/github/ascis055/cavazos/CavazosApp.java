@@ -25,7 +25,7 @@ public class CavazosApp {
 
     fileName = args[0];
 
-    // read coammands
+    // read commands
     JSONArray commandJSONArray = JSONFile.readArray(fileName);
     commandArray = getCommandArray(commandJSONArray);
 
@@ -83,6 +83,14 @@ public class CavazosApp {
       case 'l':
         print(commandArray);
         break;
+
+      case 'u':
+        undoCommand();
+        break;
+
+      case 'r':
+        redoCommand();
+        break;
     }
 
     return true;
@@ -114,7 +122,33 @@ public class CavazosApp {
   public static void randomCommand() {
     int randIndex = rand.nextInt(commandArray.length);
     System.out.printf("Command issued: %s\n", commandArray[randIndex]);
-    UndoStack.add(randIndex);
+    UndoStack.push(randIndex);
+  }
+
+  // undo command
+  public static boolean undoCommand() {
+      if (UndoStack.size() == 0) {
+	  System.out.printf("No command to undo\n");
+	  return false;
+      }
+
+      int Index = UndoStack.pop();
+      RedoStack.push(Index);
+      System.out.printf("Undo command: %s\n", commandArray[Index]);
+      return true;
+  }
+
+  // redo command
+  public static boolean redoCommand() {
+      if (RedoStack.size() == 0) {
+	  System.out.printf("No command to redo\n");
+	  return false;
+      }
+
+      int Index = RedoStack.pop();
+      UndoStack.push(Index);
+      System.out.printf("Redo command: %s\n", commandArray[Index]);
+      return true;
   }
 
   // print command array
