@@ -6,10 +6,16 @@ import org.json.simple.*;
 public class CavazosApp {
 
   public static void main(String[] args) {
-    String fileName =
-      "/Users/jerom/Documents/GitHub/class-java/general-cavazos/undoredo/src/main/java/com/cavazos/commands.json";
+    String fileName;
 
-    // read coammands
+    if (args.length != 1) {
+      System.out.println("Supply JSON file name as a command line argument");
+      return;
+    }
+
+    fileName = args[0];
+
+   // read coammands
     JSONArray commandJSONArray = JSONFile.readArray(fileName);
     String[] commandArray = getCommandArray(commandJSONArray);
     System.out.println(commandArray);
