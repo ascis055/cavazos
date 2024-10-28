@@ -6,10 +6,16 @@ import org.json.simple.*;
 public class CavazosApp {
 
   private static String[] commandArray;
+  private static Stack<Integer> UndoStack;
+  private static Stack<Integer> RedoStack;
+  private static Random rand;
 
   public static void main(String[] args) {
     String fileName;
     Scanner scan = new Scanner(System.in);
+    rand = new Random();
+    UndoStack = new Stack<Integer>();
+    RedoStack = new Stack<Integer>();
     Character command;
 
     if (args.length != 1) {
@@ -63,16 +69,20 @@ public class CavazosApp {
     printMenuLine();
   }
 
-  // execute command (initially empty)
+  // execute command
   private static Boolean executeCommand(Scanner scan, Character command) {
     switch (command) {
       case 'q':
-	System.out.println("Thank you for using General Cavazos Commander App");
+        System.out.println("Thank you for using General Cavazos Commander App");
+        break;
+
+      case 'i':
+        randomCommand();
         break;
 
       case 'l':
-	print(commandArray);
-	break;
+        print(commandArray);
+        break;
     }
 
     return true;
@@ -100,15 +110,11 @@ public class CavazosApp {
         return '_';
   }
 
-  // randomly issue commands from General Cavazos
-  public static void randomCommand(String[] commandArray, int numCommand) {
-    Random rand = new Random();
-    System.out.printf("Number\tCommand\n");
-    System.out.printf("------\t---------------\n");
-    for (int i = 0; i < numCommand; i++) {
-      int randIndex = rand.nextInt(commandArray.length);
-      System.out.printf("%04d\t%s\n", i, commandArray[randIndex]);
-    }
+  // randomly issue command from General Cavazos
+  public static void randomCommand() {
+    int randIndex = rand.nextInt(commandArray.length);
+    System.out.printf("Command issued: %s\n", commandArray[randIndex]);
+    UndoStack.add(randIndex);
   }
 
   // print command array
