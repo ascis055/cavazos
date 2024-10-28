@@ -1,12 +1,14 @@
 package com.github.ascis055.cavazos;
 
-import java.util.Random;
+import java.util.*;
 import org.json.simple.*;
 
 public class CavazosApp {
 
   public static void main(String[] args) {
     String fileName;
+    Scanner scan = new Scanner(System.in);
+    Character command;
 
     if (args.length != 1) {
       System.out.println("Supply JSON file name as a command line argument");
@@ -15,19 +17,79 @@ public class CavazosApp {
 
     fileName = args[0];
 
-   // read coammands
+    // read coammands
     JSONArray commandJSONArray = JSONFile.readArray(fileName);
     String[] commandArray = getCommandArray(commandJSONArray);
-    System.out.println(commandArray);
 
     // print list of all commands
     System.out.println("----- List of all commands -----");
     print(commandArray);
 
+    // loop until user quits
+    do {
+      printMenu();
+      System.out.print("Enter a command: ");
+      command = menuGetCommand(scan);
+
+      executeCommand(scan, command);
+    } while (command != 'q');
+
+    scan.close();
+  }
+
+  //
+  // menu functions
+  //
+  private static void printMenuLine() {
     System.out.println(
-      "----- Issuing 5 random commands from General Cavazos -----"
+      "----------------------------------------------------------"
     );
-    randomCommand(commandArray, 5);
+  }
+
+  private static void printMenuCommand(Character command, String desc) {
+    System.out.printf("%s\t%s\n", command, desc);
+  }
+
+  // print the menu
+  public static void printMenu() {
+    printMenuLine();
+    System.out.println("General Cavazos Commander App");
+    printMenuLine();
+
+    printMenuCommand('i', "Issue a command");
+    printMenuCommand('l', "List all of the commands");
+    printMenuCommand('u', "Undo the last command that was issued");
+    printMenuCommand('r', "Redo the last command that was issued");
+    printMenuCommand('q', "Quit");
+
+    printMenuLine();
+  }
+
+  // execute command (initially empty)
+  private static Boolean executeCommand(Scanner scan, Character command) {
+    return true;
+  }
+
+  // get first character from input line
+  // return value:
+  //     Character received: character value
+  //     Empty line: '_'
+  //     Exception (end-of-input or error): 'q'
+  private static Character menuGetCommand(Scanner scan) {
+    String rawInput;
+
+    try {
+        rawInput = scan.nextLine();
+    }
+    catch (Exception e) {
+        System.out.println();
+        return 'q';
+    }
+    if (rawInput.length() > 0) {
+      rawInput = rawInput.toLowerCase();
+      return rawInput.charAt(0);
+    } else
+        return '_';
   }
 
   // randomly issue commands from General Cavazos
