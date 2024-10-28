@@ -91,6 +91,10 @@ public class CavazosApp {
       case 'r':
         redoCommand();
         break;
+
+      default:
+        System.out.printf("Invalid input\n");
+        return false;
     }
 
     return true;
