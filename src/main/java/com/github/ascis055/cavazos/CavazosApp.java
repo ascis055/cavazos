@@ -5,6 +5,8 @@ import org.json.simple.*;
 
 public class CavazosApp {
 
+  private static String[] commandArray;
+
   public static void main(String[] args) {
     String fileName;
     Scanner scan = new Scanner(System.in);
@@ -19,11 +21,7 @@ public class CavazosApp {
 
     // read coammands
     JSONArray commandJSONArray = JSONFile.readArray(fileName);
-    String[] commandArray = getCommandArray(commandJSONArray);
-
-    // print list of all commands
-    System.out.println("----- List of all commands -----");
-    print(commandArray);
+    commandArray = getCommandArray(commandJSONArray);
 
     // loop until user quits
     do {
@@ -67,6 +65,16 @@ public class CavazosApp {
 
   // execute command (initially empty)
   private static Boolean executeCommand(Scanner scan, Character command) {
+    switch (command) {
+      case 'q':
+	System.out.println("Thank you for using General Cavazos Commander App");
+        break;
+
+      case 'l':
+	print(commandArray);
+	break;
+    }
+
     return true;
   }
 
